@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, Suspense } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useSearchParams } from 'next/navigation';
 import { 
   Building2, 
   Plus, 
@@ -58,7 +59,11 @@ const AVAILABLE_AMENITIES = [
   'Terrace',
 ];
 
-export default function AdminDashboardPage() {
+function AdminDashboardContent() {
+  const searchParams = useSearchParams();
+  const urlTab = searchParams.get('tab');
+  const urlAction = searchParams.get('action');
+
   const [activeTab, setActiveTab] = useState<'properties' | 'inquiries' | 'settings'>('properties');
   const [properties, setProperties] = useState<Property[]>(() => getStoredProperties());
   const [inquiries, setInquiries] = useState<AdminInquiry[]>(() => getStoredInquiries());
@@ -66,6 +71,13 @@ export default function AdminDashboardPage() {
   const [statusFilter, setStatusFilter] = useState<string>('All');
   const [typeFilter, setTypeFilter] = useState<string>('All');
   const [notification, setNotification] = useState<string | null>(null);
+
+  // Sync tab from URL if present
+  useEffect(() => {
+    if (urlTab === 'inquiries' || urlTab === 'settings' || urlTab === 'properties') {
+      setActiveTab(urlTab);
+    }
+  }, [urlTab]);
 
   // Modal State for Add / Edit
   const [editingProperty, setEditingProperty] = useState<Property | null>(null);
@@ -1078,5 +1090,13 @@ export default function AdminDashboardPage() {
         )}
       </Container>
     </div>
+  );
+}
+
+export default function AdminDashboardPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#0D0D0D] flex items-center justify-center text-white text-xs">Loading Admin Control Center...</div>}>
+      <AdminDashboardContent />
+    </Suspense>
   );
 }

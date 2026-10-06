@@ -83,7 +83,7 @@ function PropertiesContent() {
   const [selectedLocation, setSelectedLocation] = useState<string>(initialLocation);
   const [bedrooms, setBedrooms] = useState<string>(initialBeds);
   const [searchQuery, setSearchQuery] = useState<string>(initialQuery);
-  const [maxPrice, setMaxPrice] = useState<number>(status === 'Rent' ? 2000000 : 350000000);
+  const [maxPrice, setMaxPrice] = useState<number>(status === 'Rent' ? 2500000 : 400000000);
   const [minPrice, setMinPrice] = useState<number>(0);
   const [sortBy, setSortBy] = useState<string>('featured');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
@@ -106,7 +106,7 @@ function PropertiesContent() {
     setSearchQuery('');
     setSelectedPreset('all');
     setMinPrice(0);
-    setMaxPrice(status === 'Rent' ? 2000000 : 350000000);
+    setMaxPrice(status === 'Rent' ? 2500000 : 400000000);
     setSortBy('featured');
   };
 
@@ -116,9 +116,9 @@ function PropertiesContent() {
     setSelectedPreset('all');
     setMinPrice(0);
     if (newStatus === 'Rent') {
-      setMaxPrice(2000000);
+      setMaxPrice(2500000);
     } else {
-      setMaxPrice(350000000);
+      setMaxPrice(400000000);
     }
   };
 
@@ -387,7 +387,7 @@ function PropertiesContent() {
                 <input
                   type="range"
                   min={status === 'Rent' ? 100000 : 10000000}
-                  max={status === 'Rent' ? 2500000 : 350000000}
+                  max={status === 'Rent' ? 2500000 : 400000000}
                   step={status === 'Rent' ? 50000 : 5000000}
                   value={maxPrice}
                   onChange={(e) => {
@@ -398,7 +398,7 @@ function PropertiesContent() {
                 />
                 <div className="flex justify-between text-[10px] text-[#8C8781] mt-1">
                   <span>{status === 'Rent' ? '1 Lakh' : '1 Crore'}</span>
-                  <span>{status === 'Rent' ? '25 Lakh' : '35+ Crore'}</span>
+                  <span>{status === 'Rent' ? '25 Lakh' : '40+ Crore'}</span>
                 </div>
               </div>
 
@@ -572,7 +572,7 @@ function PropertiesContent() {
                 {selectedPreset !== 'all' && (
                   <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-white border border-[#E0DCD6] rounded-sm text-[#181616]">
                     Max: {formatPriceLabel(maxPrice)}
-                    <button type="button" onClick={() => handlePricePreset('all', 0, 350000000)} className="hover:text-rose-500">
+                    <button type="button" onClick={() => handlePricePreset('all', 0, 400000000)} className="hover:text-rose-500">
                       <X className="w-3 h-3" />
                     </button>
                   </span>
@@ -818,7 +818,7 @@ function PropertiesContent() {
                   <input
                     type="range"
                     min={status === 'Rent' ? 100000 : 10000000}
-                    max={status === 'Rent' ? 2500000 : 350000000}
+                    max={status === 'Rent' ? 2500000 : 400000000}
                     step={status === 'Rent' ? 50000 : 5000000}
                     value={maxPrice}
                     onChange={(e) => setMaxPrice(Number(e.target.value))}
