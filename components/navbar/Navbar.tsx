@@ -109,6 +109,14 @@ export function Navbar() {
               </a>
 
               <Link
+                href="/admin"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white/80 hover:text-[#C9A96E] border border-white/20 hover:border-[#C9A96E] rounded-sm transition-colors"
+                title="Agency Admin Panel to Edit Properties"
+              >
+                <span>Admin</span>
+              </Link>
+
+              <Link
                 href="/list-property"
                 className="inline-flex items-center justify-center px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#121010] bg-[#C9A96E] hover:bg-[#D8BC87] active:bg-[#B28F50] rounded-sm transition-all duration-200 shadow-sm hover:shadow-md hover:shadow-[#C9A96E]/20"
               >
@@ -182,7 +190,14 @@ export function Navbar() {
               </nav>
             </div>
 
-            <div className="pt-6 border-t border-[#262424] space-y-4">
+            <div className="pt-6 border-t border-[#262424] space-y-3">
+              <Link
+                href="/admin"
+                className="w-full flex items-center justify-center px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-white border border-[#C9A96E]/50 hover:bg-[#1E1C1C] rounded-sm text-center"
+              >
+                Admin Panel (Edit Properties)
+              </Link>
+
               <Link
                 href="/list-property"
                 className="w-full flex items-center justify-center px-4 py-3 text-xs font-semibold uppercase tracking-wider text-[#121010] bg-[#C9A96E] hover:bg-[#D8BC87] rounded-sm text-center"

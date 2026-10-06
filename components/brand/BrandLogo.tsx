@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import Link from 'next/link';
 
 interface BrandLogoProps {
@@ -15,14 +16,13 @@ export function BrandLogo({
   size = 'md',
   showSubtitle = true,
 }: BrandLogoProps) {
-  // Height configurations
-  const dimensions = {
-    sm: { height: 36, textMain: 'text-lg', textSub: 'text-[9px]' },
-    md: { height: 46, textMain: 'text-2xl', textSub: 'text-[10px]' },
-    lg: { height: 56, textMain: 'text-3xl', textSub: 'text-[12px]' },
-  }[size];
-
   const isDark = variant === 'dark';
+
+  const config = {
+    sm: { iconSize: 'w-8 h-8', textTitle: 'text-lg', textSub: 'text-[9px]' },
+    md: { iconSize: 'w-10 h-10', textTitle: 'text-2xl', textSub: 'text-[11px]' },
+    lg: { iconSize: 'w-12 h-12', textTitle: 'text-3xl', textSub: 'text-[13px]' },
+  }[size];
 
   return (
     <Link
@@ -30,64 +30,62 @@ export function BrandLogo({
       className={`inline-flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A96E] ${className}`}
       aria-label="Ali Estate & Marketing Agency - Home"
     >
-      {/* House & Roof Architectural Icon Mark */}
-      <div className="relative flex-shrink-0 w-10 h-10 sm:w-11 sm:h-11 rounded-sm bg-[#181616] border border-[#C9A96E]/40 p-1.5 flex items-center justify-center shadow-md transition-all duration-300 group-hover:border-[#C9A96E]">
+      {/* House Icon mark matching user's uploaded New Logo.png */}
+      <div
+        className={`relative flex-shrink-0 ${config.iconSize} rounded-sm p-1 flex items-center justify-center transition-transform group-hover:scale-105 ${
+          isDark ? 'bg-[#181616] border border-[#C9A96E]/30' : 'bg-[#181616]'
+        }`}
+      >
         <svg
-          viewBox="0 0 44 44"
+          viewBox="0 0 100 100"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           className="w-full h-full"
         >
-          {/* House pitch */}
-          <path
-            d="M8 22L22 8L36 22V36H8V22Z"
+          {/* Exact geometry of the uploaded New Logo:
+              Apex at top (56, 18), left slope to eave (20, 52),
+              concave graceful sweep across bottom to right base (72, 78),
+              right slope to eave (88, 52), horizontal return (78, 52),
+              right wall straight down to (78, 80), base return. */}
+          <g
             stroke="#FFFFFF"
-            strokeWidth="2.2"
+            strokeWidth="5"
             strokeLinecap="round"
             strokeLinejoin="round"
-          />
-          {/* Chimney */}
-          <path
-            d="M29 15V10H33V19"
-            stroke="#FFFFFF"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          {/* Golden door */}
-          <rect x="18" y="24" width="8" height="12" rx="1" fill="#C9A96E" />
-          {/* Ground line */}
-          <line
-            x1="12"
-            y1="36"
-            x2="32"
-            y2="36"
-            stroke="#C9A96E"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-          />
+          >
+            <path d="M56 16 L20 52" />
+            <path d="M20 52 C38 52 60 58 72 78" />
+            <path d="M56 16 L88 52" />
+            <path d="M88 52 L78 52" />
+            <path d="M78 52 L78 80" />
+            <path d="M72 78 L78 78" />
+            {/* 4-pane window */}
+            <rect x="50" y="36" width="12" height="12" stroke="#FFFFFF" strokeWidth="2.5" fill="none" rx="1" />
+            <line x1="56" y1="36" x2="56" y2="48" stroke="#FFFFFF" strokeWidth="2" />
+            <line x1="50" y1="42" x2="62" y2="42" stroke="#FFFFFF" strokeWidth="2" />
+          </g>
         </svg>
       </div>
 
-      {/* Typography Lockup */}
-      <div className="flex flex-col">
+      {/* Typography from New Logo:
+          "Ali Estate" in champagne gold serif + "& Marketing Agency" in clean modern sans */}
+      <div className="flex flex-col leading-tight">
         <span
-          className={`font-serif-luxury font-semibold tracking-wide transition-colors duration-200 ${
-            dimensions.textMain
+          className={`font-serif-luxury font-medium tracking-wide transition-colors ${
+            config.textTitle
           } ${
             isDark
               ? 'text-[#C9A96E] group-hover:text-[#E5D1A6]'
               : 'text-[#C9A96E] group-hover:text-[#9C7737]'
           }`}
-          style={{ letterSpacing: '0.04em' }}
         >
-          ALI ESTATE
+          Ali Estate
         </span>
         {showSubtitle && (
           <span
-            className={`font-sans-luxury uppercase font-semibold tracking-[0.24em] -mt-1 transition-colors duration-200 ${
-              dimensions.textSub
-            } ${isDark ? 'text-white/90' : 'text-[#1E1C1C]'}`}
+            className={`font-sans-luxury tracking-wide font-normal -mt-0.5 transition-colors ${
+              config.textSub
+            } ${isDark ? 'text-white/95' : 'text-[#181616]'}`}
           >
             &amp; Marketing Agency
           </span>

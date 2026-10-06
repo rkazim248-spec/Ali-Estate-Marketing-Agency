@@ -1,8 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
-  <rect width="100" height="100" rx="14" fill="#121010" />
-  <rect x="6" y="6" width="88" height="88" rx="10" fill="none" stroke="#C9A96E" stroke-width="1.5" stroke-opacity="0.4" />
-  <path d="M26 56 L50 32 L74 56 L74 76 L26 76 Z" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" />
-  <path d="M62 42 L62 34 L68 34 L68 48" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linejoin="round" />
-  <rect x="44" y="58" width="12" height="18" rx="1.5" fill="#C9A96E" />
-  <line x1="32" y1="76" x2="68" y2="76" stroke="#C9A96E" stroke-width="2.5" stroke-linecap="round" />
+  <rect width="100" height="100" rx="14" fill="#1A1717" />
+  <g stroke="#FFFFFF" fill="none" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Apex: (56, 18) -->
+    <!-- Left eave: (20, 52) -->
+    <path d="M56 18 L20 52" />
+    <!-- Concave sweep from left eave to right base: (20, 52) to (72, 78) -->
+    <path d="M20 52 C38 52 60 58 72 78" />
+    <!-- Right roofline: (56, 18) to (88, 52) -->
+    <path d="M56 18 L88 52" />
+    <!-- Right return: (88, 52) to (78, 52) -->
+    <path d="M88 52 L78 52" />
+    <!-- Right wall: (78, 52) to (78, 80) -->
+    <path d="M78 52 L78 80" />
+    <!-- Base connection: (72, 78) to (78, 80) -->
+    <path d="M72 78 L78 78" />
+    <!-- 4-Pane Window inside roof -->
+    <rect x="50" y="38" width="12" height="12" stroke="#FFFFFF" stroke-width="2.2" fill="none" rx="1" />
+    <line x1="56" y1="38" x2="56" y2="50" stroke="#FFFFFF" stroke-width="1.8" />
+    <line x1="50" y1="44" x2="62" y2="44" stroke="#FFFFFF" stroke-width="1.8" />
+  </g>
 </svg>
