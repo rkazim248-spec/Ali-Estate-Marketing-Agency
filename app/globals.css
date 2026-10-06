@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --brand-black: #111111;
+    --brand-charcoal: #1E1C1C;
+    --brand-charcoal-light: #282525;
+    --brand-gold: #C9A96E;
+    --brand-gold-light: #D8BC87;
+    --brand-gold-dark: #A98748;
+    --brand-warm-white: #F7F5F1;
+    --brand-warm-gray: #EAE7E2;
+    --brand-text-muted: #7A7672;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    color: #1A1818;
+    background-color: #FFFFFF;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  body {
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: #C9A96E;
+    color: #111111;
+  }
+}
+
+/* Custom luxury typography utilities */
+.font-serif-luxury {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+}
+
+.font-sans-luxury {
+  font-family: var(--font-sans), 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+
+/* Luxury accent text gradient */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #F0DFB9 0%, #C9A96E 50%, #B38F4D 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.bg-charcoal-gradient {
+  background: linear-gradient(180deg, #181616 0%, #111111 100%);
+}
+
+.border-gold-subtle {
+  border-color: rgba(201, 169, 110, 0.25);
+}
+
+.border-charcoal-subtle {
+  border-color: rgba(40, 37, 37, 0.4);
+}
+
+/* Refined custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #181616;
+}
+::-webkit-scrollbar-thumb {
+  background: #332E2E;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #C9A96E;
+}

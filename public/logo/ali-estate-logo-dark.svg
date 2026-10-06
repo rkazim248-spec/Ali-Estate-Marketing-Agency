@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 120" width="100%" height="100%">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E5D1A6" />
+      <stop offset="50%" stop-color="#C9A96E" />
+      <stop offset="100%" stop-color="#B28F50" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Architectural House Icon with Chimney & Modern Roofline -->
+  <g transform="translate(18, 22)">
+    <!-- Subtle outer geometric framing -->
+    <rect x="0" y="0" width="76" height="76" rx="4" fill="#181616" stroke="#C9A96E" stroke-opacity="0.35" stroke-width="1.2" />
+    <!-- White House silhouette with chimney and clean architectural pitch -->
+    <path d="M18 42 L38 22 L58 42 L58 60 L18 60 Z" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" />
+    <path d="M48 30 L48 24 L53 24 L53 35" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linejoin="round" />
+    <!-- Golden Doorway and Horizon -->
+    <rect x="33" y="46" width="10" height="14" rx="1" fill="#C9A96E" />
+    <line x1="24" y1="60" x2="52" y2="60" stroke="#C9A96E" stroke-width="2" stroke-linecap="round" />
+    <!-- Architectural interior accent line -->
+    <line x1="38" y1="28" x2="38" y2="38" stroke="#C9A96E" stroke-width="1.2" stroke-opacity="0.8" />
+  </g>
+
+  <!-- Typography: Ali Estate (Champagne Gold Serif) -->
+  <text x="112" y="58" font-family="'Cormorant Garamond', 'Playfair Display', Georgia, serif" font-size="42" font-weight="600" letter-spacing="0.04em" fill="url(#goldGrad)">
+    ALI ESTATE
+  </text>
+
+  <!-- Typography: & MARKETING AGENCY (Crisp Clean White All-Caps Tracked) -->
+  <text x="114" y="86" font-family="'Plus Jakarta Sans', Inter, -apple-system, sans-serif" font-size="12.5" font-weight="600" letter-spacing="0.32em" fill="#FFFFFF" fill-opacity="0.95">
+    &amp; MARKETING AGENCY
+  </text>
+  
+  <!-- Subtle gold accent rule -->
+  <line x1="114" y1="96" x2="380" y2="96" stroke="#C9A96E" stroke-width="1" stroke-opacity="0.4" />
+</svg>
