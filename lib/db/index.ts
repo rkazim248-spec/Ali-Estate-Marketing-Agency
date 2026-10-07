@@ -122,7 +122,7 @@ export interface DBLead {
   phone: string;
   whatsapp?: string;
   email: string;
-  source: 'website' | 'whatsapp' | 'phone' | 'walk_in' | 'referral' | 'property_portal';
+  source: 'website' | 'whatsapp' | 'phone' | 'walk_in' | 'referral' | 'property_portal' | 'ai_chat';
   status: 'new' | 'contacted' | 'qualified' | 'viewing_scheduled' | 'viewing_completed' | 'negotiation' | 'offer' | 'won' | 'lost';
   purpose?: 'buy' | 'rent' | 'sell';
   budgetMin?: number;
@@ -1126,9 +1126,31 @@ class DatabaseManager {
 
   public leads = {
     getAll: (): DBLead[] => this.load().leads,
+    findAll: (): DBLead[] => this.load().leads,
     findById: (id: string): DBLead | undefined => this.load().leads.find((l) => l.id === id),
-    create: (lead: DBLead): DBLead => {
+    create: (leadData: Partial<DBLead> & { name: string; phone: string }): DBLead => {
       const data = this.load();
+      const lead: DBLead = {
+        id: leadData.id || `lead-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
+        name: leadData.name,
+        phone: leadData.phone,
+        email: leadData.email || '',
+        whatsapp: leadData.whatsapp,
+        source: leadData.source || 'website',
+        status: leadData.status || 'new',
+        purpose: leadData.purpose,
+        budgetMin: leadData.budgetMin,
+        budgetMax: leadData.budgetMax,
+        preferredLocations: leadData.preferredLocations || [],
+        bedrooms: leadData.bedrooms,
+        propertyTypes: leadData.propertyTypes || [],
+        propertyId: leadData.propertyId,
+        propertyTitle: leadData.propertyTitle,
+        assignedAgentId: leadData.assignedAgentId,
+        notes: leadData.notes,
+        createdAt: leadData.createdAt || new Date().toISOString(),
+        updatedAt: leadData.updatedAt || new Date().toISOString(),
+      };
       data.leads.unshift(lead);
       this.save();
       return lead;

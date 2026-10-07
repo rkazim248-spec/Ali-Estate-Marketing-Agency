@@ -29,11 +29,6 @@ export function ProjectCard({ project }: ProjectCardProps) {
           <span className="px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider bg-[#121010]/90 text-[#C9A96E] border border-[#C9A96E]/40 rounded-sm">
             {project.status}
           </span>
-          {project.isSampleContent && (
-            <span className="px-2 py-0.5 text-[9px] font-medium tracking-wide bg-amber-500/20 text-amber-300 border border-amber-500/30 rounded-sm">
-              Sample Project
-            </span>
-          )}
         </div>
 
         {/* Starting Price Overlay */}

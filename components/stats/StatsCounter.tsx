@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useRef } from 'react';
+import { ShieldCheck, MapPin, Video, Users2 } from 'lucide-react';
 import { siteConfig } from '@/lib/site-config';
 
 interface StatItemProps {
@@ -17,7 +18,7 @@ function StatItem({ numericValue, suffix, label, description, isVisible }: StatI
   useEffect(() => {
     if (!isVisible) return;
     let start = 0;
-    const duration = 1600;
+    const duration = 1400;
     const stepTime = 25;
     const steps = duration / stepTime;
     const increment = numericValue / steps;
@@ -90,11 +91,6 @@ export function StatsCounter() {
             isVisible={isVisible}
           />
         ))}
-      </div>
-      <div className="mt-3 text-center">
-        <span className="text-[10px] text-[#6E6964] uppercase tracking-wider">
-          Editable configuration statistics &bull; Ali Estate &amp; Marketing Agency
-        </span>
       </div>
     </div>
   );

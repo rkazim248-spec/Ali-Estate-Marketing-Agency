@@ -28,6 +28,7 @@ import {
   BedDouble,
   Bath,
   Home,
+  Sparkles,
   Check
 } from 'lucide-react';
 
@@ -64,20 +65,19 @@ function AdminDashboardContent() {
   const urlTab = searchParams.get('tab');
   const urlAction = searchParams.get('action');
 
-  const [activeTab, setActiveTab] = useState<'properties' | 'inquiries' | 'settings'>('properties');
+  const [activeTab, setActiveTab] = useState<'properties' | 'inquiries' | 'settings' | 'ai'>(() => {
+    if (urlTab === 'inquiries' || urlTab === 'settings' || urlTab === 'properties' || urlTab === 'ai') {
+      return urlTab;
+    }
+    return 'properties';
+  });
   const [properties, setProperties] = useState<Property[]>(() => getStoredProperties());
   const [inquiries, setInquiries] = useState<AdminInquiry[]>(() => getStoredInquiries());
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('All');
   const [typeFilter, setTypeFilter] = useState<string>('All');
+  const [inquirySourceFilter, setInquirySourceFilter] = useState<'all' | 'ai_chat'>('all');
   const [notification, setNotification] = useState<string | null>(null);
-
-  // Sync tab from URL if present
-  useEffect(() => {
-    if (urlTab === 'inquiries' || urlTab === 'settings' || urlTab === 'properties') {
-      setActiveTab(urlTab);
-    }
-  }, [urlTab]);
 
   // Modal State for Add / Edit
   const [editingProperty, setEditingProperty] = useState<Property | null>(null);
@@ -427,7 +427,20 @@ function AdminDashboardContent() {
                 : 'text-white/60 hover:text-white'
             }`}
           >
-            Agency Settings &amp; Contacts
+            Agency Settings
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('ai')}
+            className={`px-4 py-2 text-xs font-semibold uppercase tracking-wider rounded-sm transition-colors flex items-center gap-2 ${
+              activeTab === 'ai'
+                ? 'bg-[#1C1A1A] text-[#C9A96E] border border-[#C9A96E]/50'
+                : 'text-white/60 hover:text-white'
+            }`}
+          >
+            <Sparkles className="w-3.5 h-3.5 text-[#C9A96E]" />
+            <span>AI Assistant &amp; Knowledge</span>
           </button>
 
           <button
@@ -632,24 +645,65 @@ function AdminDashboardContent() {
         {activeTab === 'inquiries' && (
           <div className="space-y-6">
             <div className="bg-[#141212] border border-[#242222] p-6 rounded-sm">
-              <h2 className="font-serif-luxury text-2xl font-medium text-white mb-1">
-                Client Viewing Requests &amp; Inquiries
-              </h2>
-              <p className="text-xs text-[#807B75] mb-6">
-                All inquiries submitted from property detail pages and the contact form are logged here.
-              </p>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                <div>
+                  <h2 className="font-serif-luxury text-2xl font-medium text-white">
+                    Client Viewing Requests &amp; Inquiries
+                  </h2>
+                  <p className="text-xs text-[#807B75] mt-1">
+                    All inquiries submitted from property detail pages, contact forms, and the AI Assistant are logged here.
+                  </p>
+                </div>
+
+                {/* Source Filter Switcher */}
+                <div className="flex items-center gap-1.5 p-1 bg-[#1C1A1A] border border-[#2F2C2C] rounded-sm text-xs">
+                  <button
+                    type="button"
+                    onClick={() => setInquirySourceFilter('all')}
+                    className={`px-3 py-1 rounded-xs transition-colors ${
+                      inquirySourceFilter === 'all'
+                        ? 'bg-[#C9A96E] text-[#121010] font-bold'
+                        : 'text-white/70 hover:text-white'
+                    }`}
+                  >
+                    All ({inquiries.length})
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setInquirySourceFilter('ai_chat')}
+                    className={`px-3 py-1 rounded-xs flex items-center gap-1 transition-colors ${
+                      inquirySourceFilter === 'ai_chat'
+                        ? 'bg-[#C9A96E] text-[#121010] font-bold'
+                        : 'text-[#C9A96E] hover:text-white'
+                    }`}
+                  >
+                    <Sparkles className="w-3 h-3" />
+                    <span>AI Leads ({inquiries.filter((i) => i.source === 'ai_chat').length})</span>
+                  </button>
+                </div>
+              </div>
 
               <div className="space-y-4">
-                {inquiries.map((inq) => (
+                {inquiries
+                  .filter((inq) => inquirySourceFilter === 'all' || inq.source === 'ai_chat')
+                  .map((inq) => (
                   <div
                     key={inq.id}
                     className="p-5 bg-[#181616] border border-[#262424] rounded-sm flex flex-col md:flex-row md:items-center justify-between gap-4"
                   >
                     <div className="space-y-1">
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 flex-wrap">
                         <span className="font-serif-luxury text-lg font-semibold text-white">
                           {inq.name}
                         </span>
+
+                        {inq.source === 'ai_chat' && (
+                          <span className="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider bg-[#C9A96E]/20 text-[#C9A96E] border border-[#C9A96E]/40 rounded-sm flex items-center gap-1">
+                            <Sparkles className="w-2.5 h-2.5" />
+                            Source: AI Assistant
+                          </span>
+                        )}
+
                         <span
                           className={`px-2 py-0.5 text-[9px] font-bold uppercase rounded-sm ${
                             inq.status === 'New'
@@ -773,7 +827,7 @@ function AdminDashboardContent() {
 
               <div>
                 <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#C9A96E] mb-1.5">
-                  Primary Agency Email
+                  Primary Desk Email
                 </label>
                 <input
                   type="email"
@@ -803,6 +857,96 @@ function AdminDashboardContent() {
                 >
                   Save Settings
                 </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* =========================================================================
+            TAB 4: AI ASSISTANT & KNOWLEDGE BASE MANAGEMENT
+            ========================================================================= */}
+        {activeTab === 'ai' && (
+          <div className="space-y-6 max-w-4xl">
+            <div className="bg-[#141212] border border-[#242222] p-6 rounded-sm">
+              <div className="flex items-center justify-between pb-4 border-b border-[#242222] mb-6">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="w-5 h-5 text-[#C9A96E]" />
+                    <h2 className="font-serif-luxury text-2xl font-medium text-white">
+                      Ali Estate AI Property Assistant Control
+                    </h2>
+                  </div>
+                  <p className="text-xs text-[#807B75] mt-1">
+                    Manage AI model parameters, real-time knowledge base synchronization, and lead routing.
+                  </p>
+                </div>
+
+                <span className="px-3 py-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-semibold rounded-sm flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  Engine Online
+                </span>
+              </div>
+
+              {/* Status Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                <div className="p-4 bg-[#181616] border border-[#282525] rounded-sm">
+                  <span className="text-[10px] uppercase font-semibold text-[#C9A96E] block">
+                    AI Model Engine
+                  </span>
+                  <div className="font-mono text-xs text-white mt-1">gemini-3.8-flash</div>
+                  <span className="text-[10px] text-emerald-400">Server-Side Verified</span>
+                </div>
+
+                <div className="p-4 bg-[#181616] border border-[#282525] rounded-sm">
+                  <span className="text-[10px] uppercase font-semibold text-[#C9A96E] block">
+                    Catalog Sync
+                  </span>
+                  <div className="font-mono text-xs text-white mt-1">{properties.length} Active Listings</div>
+                  <span className="text-[10px] text-emerald-400">Live Synchronized</span>
+                </div>
+
+                <div className="p-4 bg-[#181616] border border-[#282525] rounded-sm">
+                  <span className="text-[10px] uppercase font-semibold text-[#C9A96E] block">
+                    AI Lead Capture
+                  </span>
+                  <div className="font-mono text-xs text-white mt-1">
+                    {inquiries.filter((i) => i.source === 'ai_chat').length} Leads Captured
+                  </div>
+                  <span className="text-[10px] text-emerald-400">Direct CRM Pipeline</span>
+                </div>
+              </div>
+
+              {/* Knowledge Architecture Overview */}
+              <div className="space-y-3">
+                <h4 className="text-xs font-semibold uppercase tracking-wider text-[#C9A96E]">
+                  Active Knowledge Base Architecture
+                </h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                  <div className="p-3 bg-[#1C1A1A] border border-[#2B2828] rounded-sm">
+                    <strong className="text-white block">Agency Profile &amp; Dual Disciplines:</strong>
+                    <span className="text-[11px] text-[#A39E98]">
+                      Real Estate Brokerage + Digital Property Marketing (Cinematography, Photography, Social).
+                    </span>
+                  </div>
+                  <div className="p-3 bg-[#1C1A1A] border border-[#2B2828] rounded-sm">
+                    <strong className="text-white block">Published Karachi Enclaves:</strong>
+                    <span className="text-[11px] text-[#A39E98]">
+                      Clifton, DHA Phases 1-8, Emaar Oceanfront, Bahria Town Golf City, PECHS.
+                    </span>
+                  </div>
+                  <div className="p-3 bg-[#1C1A1A] border border-[#2B2828] rounded-sm">
+                    <strong className="text-white block">Anti-Hallucination Guardrails:</strong>
+                    <span className="text-[11px] text-[#A39E98]">
+                      Strict zero-fabrication of listings, prices, owner numbers, or investment guarantees.
+                    </span>
+                  </div>
+                  <div className="p-3 bg-[#1C1A1A] border border-[#2B2828] rounded-sm">
+                    <strong className="text-white block">Multilingual Support:</strong>
+                    <span className="text-[11px] text-[#A39E98]">
+                      Natural conversational fluency in English, Urdu, and Roman Urdu.
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

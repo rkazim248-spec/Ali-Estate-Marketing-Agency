@@ -4,6 +4,7 @@ import './globals.css';
 import { Navbar } from '@/components/navbar/Navbar';
 import { Footer } from '@/components/footer/Footer';
 import { WhatsAppButton } from '@/components/whatsapp/WhatsAppButton';
+import { AIAssistant } from '@/components/ai/AIAssistant';
 import { siteConfig } from '@/lib/site-config';
 
 const cormorant = Cormorant_Garamond({
@@ -150,6 +151,7 @@ export default function RootLayout({
         </main>
         <Footer />
         <WhatsAppButton />
+        <AIAssistant />
       </body>
     </html>
   );

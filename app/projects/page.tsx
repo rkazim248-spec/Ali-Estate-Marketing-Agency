@@ -22,7 +22,7 @@ export default function ProjectsPage() {
             theme="light"
             kicker="Developments &bull; Karachi"
             title="Landmark Projects &amp; Communities"
-            subtitle="Explore high-profile residential towers, gated villa communities, and mixed-use commercial developments. Clearly marked sample content for representation."
+            subtitle="Explore high-profile residential towers, gated coastal enclaves, and master-planned community developments represented by Ali Estate."
           />
         </div>
 

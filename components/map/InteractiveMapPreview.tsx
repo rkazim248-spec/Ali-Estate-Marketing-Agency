@@ -1,7 +1,8 @@
 'use client';
 
-import React from 'react';
-import { MapPin, ExternalLink, Navigation } from 'lucide-react';
+import React, { useState } from 'react';
+import { MapPin, ExternalLink, Navigation, Layers, Compass } from 'lucide-react';
+import { APIProvider, Map, AdvancedMarker, Pin } from '@vis.gl/react-google-maps';
 
 interface InteractiveMapPreviewProps {
   latitude: number;
@@ -17,69 +18,114 @@ export function InteractiveMapPreview({
   longitude,
   address,
   locationName,
+  zoom = 15,
   className = '',
 }: InteractiveMapPreviewProps) {
-  // Google Maps external link for user convenience
+  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY || "AIzaSyDzN-BbjdkKzTmhYuOrcIrwaIG_trDAV1U";
+  const [mapType, setMapType] = useState<'roadmap' | 'satellite' | 'hybrid'>('roadmap');
+
+  const position = { lat: latitude, lng: longitude };
   const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
+  const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`;
 
   return (
     <div
-      className={`relative rounded-sm overflow-hidden border border-[#E9E7E3] bg-[#1A1818] text-white ${className}`}
+      className={`relative rounded-sm overflow-hidden border border-[#E9E7E3] bg-[#141212] text-white shadow-md ${className}`}
     >
-      {/* Visual Cartographic Architectural Graphic */}
-      <div className="relative w-full h-72 sm:h-80 bg-neutral-900 flex items-center justify-center overflow-hidden">
-        {/* Subtle grid and contour lines */}
-        <div
-          className="absolute inset-0 opacity-15"
-          style={{
-            backgroundImage:
-              'linear-gradient(#C9A96E 1px, transparent 1px), linear-gradient(to right, #C9A96E 1px, transparent 1px)',
-            backgroundSize: '40px 40px',
-          }}
-        />
-
-        {/* Concentric radar rings centered on location marker */}
-        <div className="absolute w-64 h-64 rounded-full border border-[#C9A96E]/20 animate-pulse pointer-events-none" />
-        <div className="absolute w-40 h-40 rounded-full border border-[#C9A96E]/30 pointer-events-none" />
-
-        {/* Center Pin Marker */}
-        <div className="relative z-10 flex flex-col items-center">
-          <div className="relative">
-            <div className="w-12 h-12 rounded-full bg-[#C9A96E] text-[#121010] flex items-center justify-center shadow-2xl ring-4 ring-white/20 animate-bounce">
-              <MapPin className="w-6 h-6 fill-current text-[#121010]" />
+      {/* Map Container */}
+      <div className="relative w-full h-80 sm:h-96 bg-[#1A1818]">
+        {apiKey ? (
+          <APIProvider apiKey={apiKey}>
+            <Map
+              defaultCenter={position}
+              defaultZoom={zoom}
+              mapTypeId={mapType}
+              gestureHandling="cooperative"
+              disableDefaultUI={false}
+              zoomControl={true}
+              fullscreenControl={false}
+              streetViewControl={true}
+              className="w-full h-full"
+            >
+              <AdvancedMarker position={position} title={locationName}>
+                <Pin
+                  background="#181616"
+                  borderColor="#C9A96E"
+                  glyphColor="#C9A96E"
+                  scale={1.2}
+                />
+              </AdvancedMarker>
+            </Map>
+          </APIProvider>
+        ) : (
+          /* Fallback aesthetic view */
+          <div className="w-full h-full flex items-center justify-center bg-neutral-900 relative">
+            <div className="text-center z-10 p-6">
+              <MapPin className="w-10 h-10 text-[#C9A96E] mx-auto mb-2" />
+              <h4 className="font-serif-luxury text-lg text-white">{locationName}</h4>
+              <p className="text-xs text-[#A8A39D] mt-1">{address}</p>
             </div>
-            <div className="w-4 h-1.5 bg-black/50 rounded-full blur-xs mx-auto mt-1" />
           </div>
+        )}
 
-          <div className="mt-3 px-3.5 py-1.5 bg-[#121010]/90 border border-[#C9A96E]/40 rounded-sm shadow-xl text-center">
-            <span className="text-xs font-semibold text-white block">
-              {locationName}
-            </span>
-            <span className="text-[10px] text-[#C9A96E] font-mono">
-              {latitude.toFixed(4)}° N, {longitude.toFixed(4)}° E
-            </span>
-          </div>
+        {/* Top Floating Control Bar */}
+        <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5 bg-[#141212]/90 backdrop-blur-xs border border-white/15 p-1 rounded-sm shadow-lg text-[11px]">
+          <button
+            type="button"
+            onClick={() => setMapType('roadmap')}
+            className={`px-2.5 py-1 rounded-xs font-medium transition-colors ${
+              mapType === 'roadmap'
+                ? 'bg-[#C9A96E] text-[#121010] font-bold'
+                : 'text-white/80 hover:text-white hover:bg-white/10'
+            }`}
+          >
+            Map
+          </button>
+          <button
+            type="button"
+            onClick={() => setMapType('hybrid')}
+            className={`px-2.5 py-1 rounded-xs font-medium transition-colors ${
+              mapType === 'hybrid'
+                ? 'bg-[#C9A96E] text-[#121010] font-bold'
+                : 'text-white/80 hover:text-white hover:bg-white/10'
+            }`}
+          >
+            Satellite
+          </button>
         </div>
 
-        {/* Top Right Action Button */}
-        <a
-          href={googleMapsUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="absolute top-4 right-4 z-20 inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#121010]/85 hover:bg-black text-white text-xs font-medium border border-white/20 rounded-sm transition-colors shadow-lg"
-        >
-          <span>Open in Google Maps</span>
-          <ExternalLink className="w-3.5 h-3.5 text-[#C9A96E]" />
-        </a>
+        {/* Top Right Actions */}
+        <div className="absolute top-3 right-3 z-10 flex items-center gap-2">
+          <a
+            href={directionsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#141212]/90 hover:bg-black text-white text-xs font-medium border border-[#C9A96E]/40 hover:border-[#C9A96E] rounded-sm transition-colors shadow-lg backdrop-blur-xs"
+            title="Get driving directions"
+          >
+            <Compass className="w-3.5 h-3.5 text-[#C9A96E]" />
+            <span className="hidden sm:inline">Directions</span>
+          </a>
 
-        {/* Bottom Bar Info */}
-        <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/95 via-black/80 to-transparent p-4 z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-          <div className="flex items-center gap-2 text-xs text-white/90">
+          <a
+            href={googleMapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#141212]/90 hover:bg-black text-white text-xs font-medium border border-white/20 hover:border-white/40 rounded-sm transition-colors shadow-lg backdrop-blur-xs"
+          >
+            <span>Open Maps</span>
+            <ExternalLink className="w-3.5 h-3.5 text-[#C9A96E]" />
+          </a>
+        </div>
+
+        {/* Bottom Property Location Banner */}
+        <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/95 via-black/80 to-transparent p-4 z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-2 pointer-events-none">
+          <div className="flex items-center gap-2 text-xs text-white/95 drop-shadow-sm">
             <Navigation className="w-3.5 h-3.5 text-[#C9A96E] flex-shrink-0" />
-            <span className="truncate">{address}</span>
+            <span className="truncate font-medium">{address}</span>
           </div>
-          <span className="text-[10px] uppercase tracking-wider text-[#C9A96E]">
-            Karachi Coastal &amp; Urban Belt
+          <span className="text-[10px] uppercase font-semibold tracking-wider text-[#C9A96E] drop-shadow-sm">
+            Coordinates: {latitude.toFixed(4)}° N, {longitude.toFixed(4)}° E
           </span>
         </div>
       </div>

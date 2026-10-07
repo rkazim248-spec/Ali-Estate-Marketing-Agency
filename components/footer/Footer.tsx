@@ -157,11 +157,6 @@ export function Footer() {
                   List Your Property
                 </Link>
               </li>
-              <li>
-                <Link href="/admin" className="text-[#C9A96E] hover:underline transition-colors font-medium">
-                  Agency Admin Portal
-                </Link>
-              </li>
             </ul>
           </div>
 

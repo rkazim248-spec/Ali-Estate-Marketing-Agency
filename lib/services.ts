@@ -312,3 +312,11 @@ export const MARKETING_PACKAGES = [
     ]
   }
 ];
+
+export function getAllServices(): ServiceItem[] {
+  return [...REAL_ESTATE_SERVICES, ...MARKETING_SERVICES];
+}
+
+export function getServiceBySlug(slug: string): ServiceItem | undefined {
+  return getAllServices().find((s) => s.slug === slug);
+}

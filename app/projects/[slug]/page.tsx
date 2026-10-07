@@ -62,16 +62,6 @@ export default async function ProjectDetailPage({ params }: PageProps) {
           <span className="text-[#181616] font-medium">{project.name}</span>
         </nav>
 
-        {/* Sample content indicator banner */}
-        {project.isSampleContent && (
-          <div className="mb-6 p-3 bg-amber-500/10 border border-amber-500/30 rounded-sm text-xs text-amber-800 flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 text-amber-600 flex-shrink-0" />
-            <span>
-              <strong>Sample Development Profile:</strong> This project illustrates modern multi-unit development presentation standards for Ali Estate.
-            </span>
-          </div>
-        )}
-
         {/* Hero Card */}
         <div className="bg-white border border-[#E9E7E3] p-6 sm:p-10 rounded-sm mb-10 shadow-xs">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-[#EAE7E2]">

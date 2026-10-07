@@ -9,6 +9,7 @@ const INQUIRIES_KEY = 'ali_estate_inquiries_v1';
 export interface AdminInquiry {
   id: string;
   type: 'viewing' | 'general' | 'listing';
+  source?: 'ai_chat' | 'website' | 'whatsapp' | 'viewing_request';
   name: string;
   phone: string;
   email: string;
@@ -22,17 +23,18 @@ export interface AdminInquiry {
 
 const DEFAULT_INQUIRIES: AdminInquiry[] = [
   {
-    id: 'inq-1',
+    id: 'inq-ai-1',
     type: 'viewing',
+    source: 'ai_chat',
     name: 'Mustafa Alvi',
     phone: '+92 321 8899771',
     email: 'mustafa.alvi@example.com',
     propertyTitle: 'The Clifton Horizon Penthouse',
     preferredDate: '2026-10-10',
     preferredTime: 'Sunset (4:00 PM - 6:30 PM)',
-    message: 'Interested in private sunset viewing. Please confirm building security clearance.',
+    message: 'AI Assistant Consultation: Requested private sunset viewing. Inquired about Arabian sea view and building security.',
     status: 'New',
-    dateReceived: '2026-10-06 11:30 AM',
+    dateReceived: '2026-10-06 01:15 PM',
   },
   {
     id: 'inq-2',
